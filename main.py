@@ -1,6 +1,6 @@
 from io import BytesIO
 import base64
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from PIL import Image
 from tensorflow import keras
 import tensorflow as tf
@@ -46,9 +46,7 @@ def index():
             predict = model.predict(x)
             class_prediction = np.argmax(predict)
             prediction = class_dict[class_prediction]
-            data = {"prediction": str(prediction)}
-            print("HALLLOOOOOOOOO ", str(prediction))
-            if str(prediction) == "bleackhead":
+            if str(prediction) == "blackhead":
                 data = {
                     "jenis": str(prediction),
                     "deskripsi": "Blackhead adalah jenis komedo yang tampak seperti pori-pori yang membesar dan menghitam. Terjadi ketika pori-pori membesar dan terbuka ke permukaan kulit dan ke kelenjar minyak, lalu teroksidasi oleh udara dan berubah menjadi warna hitam/coklat. Komedo jenis ini adalah komedo yang paling sering dialami oleh kebanyakan orang.",
@@ -151,7 +149,7 @@ def index():
         except Exception as e:
             return jsonify({"error": str(e)})
 
-    return "OK"
+    return render_template('home.html')
 
 
 if __name__ == "__main__":
